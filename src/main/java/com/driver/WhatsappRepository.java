@@ -89,6 +89,7 @@ public class WhatsappRepository {
                 groupMessageMap.put(group,msg);
 
                 senderMap.put(message,sender);
+                return msg.size();
             }
             else {
                 throw new Exception("You are not allowed to send message");
@@ -97,7 +98,6 @@ public class WhatsappRepository {
         else {
             throw new Exception("Group does not exist");
         }
-        return messageId;
     }
 
 
