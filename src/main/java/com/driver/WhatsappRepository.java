@@ -34,14 +34,15 @@ public class WhatsappRepository {
 
 
     public String createUser(String userName, String mobile) throws Exception{
-        User user = new User(userName, mobile);
+
         if (userMobile.contains(mobile)){
             throw new Exception ("User already exists");
         }
         else {
             userMobile.add(mobile);
 //            userHashMap.put(userName,user);
-            return "User added Successfully";
+            User user = new User(userName, mobile);
+            return "SUCCESS";
         }
     }
 
@@ -126,7 +127,7 @@ public class WhatsappRepository {
         else {
             throw new Exception("Group does not exist");
         }
-        return "Admin changed successfully";
+        return "SUCCESS";
     }
 
 
