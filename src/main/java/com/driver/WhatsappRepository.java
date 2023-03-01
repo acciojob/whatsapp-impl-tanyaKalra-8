@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public class WhatsappRepository {
 
@@ -70,7 +71,7 @@ public class WhatsappRepository {
     }
 
 
-    public int sendMessage(Message message, User sender, Group group) {
+    public int sendMessage(Message message, User sender, Group group) throws Exception{
         if (groupUserMap.containsKey(group)){
             List<User> users = groupUserMap.get(group);
             boolean flag = false;
@@ -81,11 +82,7 @@ public class WhatsappRepository {
                 }
             }
             if (!flag){
-                try {
-                    throw new Exception("You are not allowed to send message");
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                throw new Exception("You are not allowed to send message");
             }
             else {
                 messageId++;
@@ -97,13 +94,39 @@ public class WhatsappRepository {
             }
         }
         else {
-            try {
-                throw new Exception("Group does not exist");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            throw new Exception("Group does not exist");
         }
         return messageId;
+    }
+
+
+    public String changeAdmin(User approver, User user, Group group) throws Exception{
+        if (adminMap.containsKey(group)){
+            if (adminMap.get(group).equals(approver)){
+                List<User> users = groupUserMap.get(group);
+                boolean flag = false;
+                for (User user1: users){
+                    if (user1.equals(user)){
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag){
+                    adminMap.remove(group);
+                    adminMap.put(group,user);
+                }
+                else {
+                    throw new Exception("User is not a participant");
+                }
+            }
+            else {
+                throw new Exception("Approver does not have rights");
+            }
+        }
+        else {
+            throw new Exception("Group does not exist");
+        }
+        return "Admin changed successfully";
     }
 
 
