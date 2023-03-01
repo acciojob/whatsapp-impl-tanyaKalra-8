@@ -84,7 +84,7 @@ public class WhatsappRepository {
             }
             if (flag){
                 messageId++;
-                List<Message> msg = groupMessageMap.get(group);
+                List<Message> msg = groupMessageMap.getOrDefault(group, new ArrayList<>());
                 msg.add(message);
                 groupMessageMap.put(group,msg);
                 senderMap.put(message,sender);
