@@ -16,7 +16,6 @@ public class WhatsappRepository {
     private HashMap<Group, User> adminMap;
     private HashSet<String> userMobile;
 
-//    private HashMap<String, User> userHashMap;
     private int customGroupCount;
     private int messageId;
 
@@ -26,7 +25,6 @@ public class WhatsappRepository {
         this.senderMap = new HashMap<Message, User>();
         this.adminMap = new HashMap<Group, User>();
         this.userMobile = new HashSet<>();
-//        this.userHashMap = new HashMap<>();
         this.customGroupCount = 0;
         this.messageId = 0;
     }
@@ -126,4 +124,47 @@ public class WhatsappRepository {
     }
 
 
+    public int removeUser(User user) throws Exception {
+        int deletedMessages = 0;
+        int updatedUsers = 0;
+        int updatedNoOfMessages =0;
+        for (Map.Entry<Group,List<User>> map: groupUserMap.entrySet()) {
+            List<User> users = map.getValue();
+            boolean flag = false;
+
+            for (User user1: users){
+                if (user1.equals(user)){
+                    flag=true;
+                    break;
+                }
+            }
+            if (flag){
+                if (adminMap.containsKey(user)){
+                    throw new Exception("Cannot remove admin");
+                }
+                else {
+                    //Main logic of deletion starts here
+                    users.remove(user);
+                    updatedUsers = users.size();
+                    if (groupMessageMap.containsKey(user)){
+                        updatedUsers = groupMessageMap.get(user).size() - deletedMessages;
+                        messageId-=groupMessageMap.get(user).size();
+                        groupMessageMap.remove(user);
+
+                    }
+                }
+
+            }
+            else{
+                throw new Exception("User not found");
+            }
+        }
+        return (updatedUsers+ updatedUsers + messageId);
+    }
+
+
+    public String findMessage(Date start, Date end, int k) throws Exception{
+        List<Message> messages = new ArrayList<>();
+        return null;
+    }
 }
